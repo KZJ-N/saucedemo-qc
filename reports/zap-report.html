@@ -11,16 +11,16 @@
 
 | # | Warning | Count | Affected URL(s) | Recommended Fix |
 |---|---------|-------|----------------|----------------|
-| 1 | Re-examine Cache-control Directives [10015] | 3 | `/`, `/manifest.json`, `/robots.txt` | Add proper cache-control headers (`no-store`, `no-cache`, `max-age`) to sensitive content. |
+| 1 | Re-examine Cache-control Directives [10015] | 2 | `/`, `/manifest.json` | Add proper cache-control headers (`no-store`, `no-cache`, `max-age`) to sensitive content. |
 | 2 | Missing Anti-clickjacking Header [10020] | 1 | `/` | Add `X-Frame-Options: DENY` or `Content-Security-Policy: frame-ancestors 'none'`. |
 | 3 | X-Content-Type-Options Header Missing [10021] | 5 | `/`, `/favicon.ico`, `/manifest.json`, `/robots.txt`, `/static/css/main.8a7d64a1.css` | Add `X-Content-Type-Options: nosniff` to prevent MIME type sniffing. |
-| 4 | Information Disclosure - Suspicious Comments [10027] | 3 | `/icon/icon-192x192.png` (404), `/sitemap.xml` (404), `/static/js/main.bcf4bc5f.js` | Remove sensitive comments or debug info from code. |
-| 5 | Strict-Transport-Security Header Not Set [10035] | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png` (404), `/robots.txt`, `/sitemap.xml` (404) | Add HSTS header to enforce HTTPS. Example: `Strict-Transport-Security: max-age=31536000; includeSubDomains`. |
-| 6 | Content Security Policy (CSP) Header Not Set [10038] | 3 | `/`, `/icon/icon-192x192.png` (404), `/sitemap.xml` (404) | Implement a CSP header to reduce XSS and code injection risks. |
-| 7 | Storable and Cacheable Content [10049] | 5 | `/`, `/icon/icon-192x192.png` (404), `/robots.txt`, `/sitemap.xml` (404), `/static/css/main.8a7d64a1.css` | Ensure sensitive resources have appropriate cache headers (`no-store` for sensitive assets). |
-| 8 | Retrieved from Cache [10050] | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png` (404), `/robots.txt`, `/sitemap.xml` (404) | Verify sensitive data is not served from cache or add `Cache-Control` headers. |
+| 4 | Information Disclosure - Suspicious Comments [10027] | 3 | `/icon/icon-192x192.png` (404), `/sitemap.xml` (404), `/static/js/main.bcf4bc5f.js` | Remove sensitive comments or debug information from code. |
+| 5 | Strict-Transport-Security Header Not Set [10035] | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png` (404), `/robots.txt`, `/sitemap.xml` (404) | Add `Strict-Transport-Security` (HSTS) header to enforce HTTPS. |
+| 6 | Content Security Policy (CSP) Header Not Set [10038] | 2 | `/`, `/icon/icon-192x192.png` (404) | Implement a CSP header to reduce XSS and code injection risks. |
+| 7 | Storable and Cacheable Content [10049] | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png` (404), `/robots.txt`, `/sitemap.xml` (404) | Ensure sensitive resources have proper cache headers. |
+| 8 | Retrieved from Cache [10050] | 7 | `/`, `/robots.txt`, `/favicon.ico`, `/icon/icon-192x192.png` (404), `/manifest.json` | Verify sensitive data is not served from cache or add `Cache-Control` headers. |
 | 9 | Permissions Policy Header Not Set [10063] | 4 | `/`, `/icon/icon-192x192.png` (404), `/sitemap.xml` (404), `/static/js/main.bcf4bc5f.js` | Add `Permissions-Policy` header to restrict browser features (camera, microphone, geolocation, etc.). |
-| 10 | Cross-Domain Misconfiguration [10098] | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png` (404), `/manifest.json`, `/robots.txt`, `/sitemap.xml` (404) | Review CORS policy; only allow trusted domains to access resources. |
+| 10 | Cross-Domain Misconfiguration [10098] | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png` (404), `/robots.txt`, `/sitemap.xml` (404) | Review CORS policy; only allow trusted domains. |
 | 11 | Modern Web Application [10109] | 3 | `/`, `/icon/icon-192x192.png` (404), `/sitemap.xml` (404) | Review web app structure and ensure security headers are consistent. |
 | 12 | Sub Resource Integrity Attribute Missing [90003] | 1 | `/` | Add `integrity` attributes to external JS/CSS resources to prevent tampering. |
 | 13 | Insufficient Site Isolation Against Spectre Vulnerability [90004] | 2 | `/`, `/` | Implement browser isolation or site partitioning; review mitigations for Spectre attacks. |
@@ -32,17 +32,15 @@
 - **Warnings:** 13  
 - **Passed Checks:** 54  
 
-> Most issues are **header-related or minor code issues**. Implementing these recommended fixes will significantly improve security posture.
+> Most issues are **header-related or minor code-level**. Fixing these will improve security posture significantly.
 
 ---
 
 **Note:**  
-- The scan completed successfully.  
-- GitHub Actions artifact upload errors (`Resource not accessible by integration`) are **permission issues**, not scan failures.  
+- GitHub Actions artifact upload errors (`Resource not accessible by integration`) are **permissions issues**, not scan failures.  
 - Ensure workflow permissions include:
 
 ```yaml
 permissions:
   contents: read
   actions: write
-  
