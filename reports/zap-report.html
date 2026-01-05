@@ -1,1 +1,45 @@
+# OWASP ZAP Baseline Scan Report - SauceDemo
 
+**Scan Target:** https://www.saucedemo.com  
+**Scan Date:** 2026-01-05  
+**Total URLs Scanned:** 12  
+**PASS:** 54 | **WARN-NEW:** 13 | **FAIL-NEW:** 0  
+
+---
+
+## ⚠️ Warnings and Recommended Fixes
+
+| # | Warning | Count | Affected URL(s) | Recommended Fix |
+|---|---------|-------|----------------|----------------|
+| 1 | Re-examine Cache-control Directives | 3 | `/`, `/manifest.json`, `/robots.txt` | Add proper cache-control headers (`no-store`, `no-cache`, `max-age`) for sensitive content. |
+| 2 | Missing Anti-clickjacking Header | 1 | `/` | Add `X-Frame-Options: DENY` or `Content-Security-Policy: frame-ancestors 'none'`. |
+| 3 | X-Content-Type-Options Header Missing | 5 | `/`, `/favicon.ico`, `/manifest.json`, `/robots.txt`, `/static/css/main.8a7d64a1.css` | Add `X-Content-Type-Options: nosniff` to prevent MIME type sniffing. |
+| 4 | Information Disclosure - Suspicious Comments | 3 | `/icon/icon-192x192.png`, `/sitemap.xml`, `/static/js/main.bcf4bc5f.js` | Remove sensitive comments or debug information from code. |
+| 5 | Strict-Transport-Security Header Not Set | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png`, `/robots.txt`, `/sitemap.xml` | Add `Strict-Transport-Security` (HSTS) header to enforce HTTPS. |
+| 6 | Content Security Policy (CSP) Header Not Set | 2 | `/`, `/icon/icon-192x192.png` | Implement a CSP header to reduce XSS and code injection risks. |
+| 7 | Storable and Cacheable Content | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png`, `/robots.txt`, `/sitemap.xml` | Ensure sensitive resources have appropriate cache headers. |
+| 8 | Retrieved from Cache | 6 | `/`, `/manifest.json`, `/robots.txt`, `/favicon.ico`, `/icon/icon-192x192.png`, `/sitemap.xml` | Verify sensitive data is not served from cache or add `Cache-Control` headers. |
+| 9 | Permissions Policy Header Not Set | 4 | `/`, `/icon/icon-192x192.png`, `/sitemap.xml`, `/static/js/main.bcf4bc5f.js` | Add `Permissions-Policy` header to restrict browser features (camera, microphone, etc.). |
+| 10 | Cross-Domain Misconfiguration | 5 | `/`, `/favicon.ico`, `/icon/icon-192x192.png`, `/robots.txt`, `/sitemap.xml` | Review CORS policy; only allow trusted domains. |
+| 11 | Modern Web Application | 3 | `/`, `/icon/icon-192x192.png`, `/sitemap.xml` | Review web app structure and ensure security headers are consistent. |
+| 12 | Sub Resource Integrity Attribute Missing | 1 | `/` | Add `integrity` attributes to external JS/CSS resources. |
+| 13 | Insufficient Site Isolation Against Spectre Vulnerability | 2 | `/`, `/` | Implement browser isolation or site partitioning; review mitigations for Spectre. |
+
+---
+
+## ✅ Scan Summary
+- **Critical Failures:** 0  
+- **Warnings:** 13  
+- **Passed Checks:** 54  
+
+> Most issues are **header-related or minor code issues**. Implementing recommended fixes will significantly improve security posture.
+
+---
+
+**Note:**  
+The scan completed successfully despite these warnings. Artifact upload errors in GitHub Actions are related to **permissions**, not the scan itself. Ensure workflow permissions include:
+
+```yaml
+permissions:
+  contents: read
+  actions: write
