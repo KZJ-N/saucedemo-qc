@@ -2,13 +2,9 @@ name: Quality Control - Security Scan
 
 permissions:
   contents: read
-  actions: read
-  checks: write
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
 
 jobs:
@@ -17,7 +13,7 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v
 
     - name: Run OWASP ZAP Baseline Scan
       uses: zaproxy/action-baseline@v0.11.0
