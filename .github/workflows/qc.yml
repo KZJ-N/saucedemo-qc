@@ -2,6 +2,7 @@ name: Quality Control - Security Scan
 
 permissions:
   contents: read
+  actions: write
 
 on:
   push:
@@ -27,3 +28,4 @@ jobs:
       with:
         name: zap-security-report
         path: zap_report.html
+        
