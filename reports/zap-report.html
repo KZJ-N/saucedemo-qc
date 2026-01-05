@@ -43,4 +43,13 @@
 ```yaml
 permissions:
   contents: read
+  actions: write---
+
+**Note:**  
+- GitHub Actions artifact upload errors (`Resource not accessible by integration`) are **permissions issues**, not scan failures.  
+- Ensure workflow permissions include:
+
+```yaml
+permissions:
+  contents: read
   actions: write
